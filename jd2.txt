@@ -1,0 +1,51 @@
+AI Solutions Architect, AI/ML
+Mountain View, CA (Remote)
+At Groq. We believe in an AI economy powered by human agency. We envision a world where AI is accessible to all, a world that demands processing power that is better, faster, and more affordable than is available today. AI applications are currently constrained by the limitations of the Graphics Processing Unit (GPU), a technology originally developed for the gaming market and soon to become the weakest link in the AI economy.
+
+Enter Groq's LPU™ AI Inference Technology. Specifically engineered for the demands of large language models (LLMs), the Language Processing Unit outpaces the GPU in speed, power, efficiency, and cost-effectiveness. The quickest way to understand the opportunity is to watch the following talk – groq.link/scspdemo.
+
+Why join Groq? AI will change humanity forever, and we believe preservation of human agency and self determination is only possible if AI is made affordably and universally accessible. Groq’s LPUs will power AI from an early stage, and you will get to leave your fingerprint on civilization.
+
+AI Solutions Architect, AI/ML
+
+Mission: You will be at the intersection of technology and business. In this hybrid role, you will blend the technical expertise of a solutions architect, the customer-facing skills of a sales engineer, and the hands-on implementation responsibilities of a forward-deployed engineer. Your mission is to drive the adoption of Groq’s technology by understanding customer needs, architecting solutions, and ensuring successful deployment.
+
+Outcomes: 
+
+Technical Sales Leadership: Lead all technical sales activities related to customer engagements from early-stage discussions through successful design wins. Uncover critical technical and business considerations, and work closely with sales account leaders to craft winning technical proposals with Groq products. 
+Customer Engagement: Build deep relationships with customers by understanding their solutions and challenges, positioning Groq's products effectively, and providing exceptional technical support throughout the customer lifecycle. Engage in technical discussions and deliver compelling demos to establish technical credibility. 
+AI/ML Solution Expertise: Develop an in-depth understanding of Groq's Language Processor Unit (LPU) and software stack, effectively translating this knowledge into valuable customer insights and product positioning. Lead technical discussions on AI/ML models, algorithmic kernels, and accelerated hardware in production environments. 
+Market Impact & Product Development: Drive the adoption of Groq's AI/ML solutions by articulating their unique value propositions in key verticals like hyperscale data centers, automotive, and high-performance computing (HPC). Recommend product enhancements based on first-hand knowledge to influence Groq's product development strategy. 
+Technical Support and Optimization: Act as the primary technical contact for key customers, providing ongoing support and technical advice to maximize the value of Groq’s technology. Lead continuous optimization and enhancement of deployed systems, identifying areas for improvement and expansion within client environments. 
+Customer Satisfaction and Retention: Partner with the customer success team to develop strategies that ensure customer satisfaction, contributing to long-term relationships and potential upsell opportunities. Provide hands-on support and technical training to customer teams, ensuring they are empowered to operate Groq systems independently. 
+Skills: 
+
+Technical Proficiency: Deep experience in computational sciences, physics, or mathematical-centric applications. Expertise in algorithm programming using languages like Python, Java, Julia, Haskell, R, C++, Scala, or Matlab, with experience in modern machine learning frameworks. 
+Builder Mentality: Experience designing, prototyping, and building complex AI/ML-based solutions for customers. 
+Accelerated Hardware Knowledge: Experience supporting or utilizing PCIe accelerators such as GPUs, FPGAs, DSPs from evaluation to production stages. Familiarity with embedded domain-specific languages (EDSL) like CUDA, OneAPI, OpenCL, or HDL is a plus, along with hands-on understanding of algorithmic kernels and models on accelerated hardware. 
+AI/ML Industry Insight: An technical understanding of AI/ML applications, particularly in domains such as large language models (LLMs), computer vision, and text-to-speech. Prior experience in hyperscale data centers, automotive, or HPC domains is highly valued. 
+Customer-Focused Leadership: Proven ability to engage with customers, particularly at the executive or architect level, ensuring their needs are met or exceeded. A customer-first mindset with a strong track record of supporting highly complex design cycles. 
+Communication & Collaboration: Excellent leadership, mentoring, and cross-functional collaboration skills. Strong writing and public speaking abilities, with a focus on transparency, integrity, and effective communication in a customer-facing environment. 
+MS in Computer Science, Electrical Engineering, Math, or Physics, with 5+ years of experience in machine learning, algorithm development, or deployment. 
+Strong track record of supporting customers through complex design cycles in fast-paced, dynamic environments.
+Ability to travel and support customers on-site during deployment phases.
+Attributes of a Groqster:
+
+Humility - Egos are checked at the door
+Collaborative & Team Savvy - We make up the smartest person in the room, together
+Growth & Giver Mindset - Learn it all versus know it all, we share knowledge generously
+Curious & Innovative - Take a creative approach to projects, problems, and design
+Passion, Grit, & Boldness - no limit thinking, fueling informed risk taking
+If this sounds like you, we’d love to hear from you!
+
+Compensation: At Groq, a competitive base salary is part of our comprehensive compensation package, which includes equity and benefits. For this role, the base salary range is 143,600 to $289,100, determined by your skills, qualifications, experience and internal benchmarks.
+
+Location: Groq is a geo-agnostic company, meaning you work where you are. Exceptional candidates will thrive in asynchronous partnerships and remote collaboration methods. Some roles may require being located near our primary sites, as indicated in the job description.  
+
+At Groq: Our goal is to hire and promote an exceptional workforce as diverse as the global populations we serve. Groq is an equal opportunity employer committed to diversity, inclusion, and belonging in all aspects of our organization. We value and celebrate diversity in thought, beliefs, talent, expression, and backgrounds. We know that our individual differences make us better.
+
+ 
+
+Groq is an Equal Opportunity Employer that is committed to inclusion and diversity. Qualified applicants will receive consideration for employment without regard to race, color, religion, national origin, gender, sexual orientation, gender identity, disability or protected veteran status.  We also take affirmative action to offer employment opportunities to minorities, women, individuals with disabilities, and protected veterans.
+
+Groq is committed to working with qualified individuals with physical or mental disabilities. Applicants who would like to contact us regarding the accessibility of our website or who need special assistance or a reasonable accommodation for any part of the application or hiring process may contact us at:  talent@groq.com.  This contact information is for accommodation requests only.  Evaluation of requests for reasonable accommodations will be determined on a case-by-case basis.

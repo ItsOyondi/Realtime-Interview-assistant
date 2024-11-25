@@ -1,0 +1,53 @@
+Job Title: Data Scientist – Amazon Fulfillment & Logistics
+Location: [Insert Location Here]
+Job Type: Full-Time
+Job Summary:
+Are you excited by the prospect of working with massive datasets, developing innovative models, and driving key business decisions? Amazon's Fulfillment & Logistics team is looking for a passionate, results-oriented Data Scientist to help us innovate and optimize our global supply chain.
+
+As a Data Scientist at Amazon, you will leverage your expertise in advanced analytics, machine learning, and data engineering to solve challenging problems at scale. You will work closely with software engineers, product managers, and business leaders to develop insights and solutions that enhance customer experience and improve operational efficiency.
+
+This role requires a mix of strategic thinking, technical expertise, and strong business acumen. If you're passionate about data, enjoy tackling ambiguous problems, and thrive in a fast-paced environment, we'd love to hear from you.
+
+Key Responsibilities:
+Model Development:
+
+Design, develop, and deploy scalable machine learning models to predict demand, optimize inventory placement, and reduce costs in Amazon’s fulfillment network.
+Apply statistical methods, predictive modeling, and optimization techniques to solve business-critical problems.
+Data Analysis and Insights:
+
+Perform exploratory data analysis (EDA) to identify trends, patterns, and opportunities within complex datasets.
+Create dashboards, visualizations, and reports to communicate findings to stakeholders.
+Collaboration:
+
+Partner with software engineers, data engineers, and business analysts to build robust data pipelines and improve data accessibility for modeling.
+Collaborate with product managers and business stakeholders to define key performance indicators (KPIs) and measure the impact of data-driven initiatives.
+Problem Solving:
+
+Tackle large-scale optimization challenges in areas like transportation planning, order fulfillment, and delivery route optimization.
+Develop innovative approaches to improve customer satisfaction and reduce operational inefficiencies.
+Continuous Learning:
+
+Stay up-to-date with the latest advancements in machine learning, statistics, and big data technologies.
+Participate in Amazon's internal data science communities to share knowledge and foster innovation.
+Basic Qualifications:
+Bachelor’s degree in Computer Science, Data Science, Statistics, Mathematics, Engineering, or a related quantitative field.
+3+ years of experience in data science, analytics, or machine learning roles.
+Proficiency in programming languages such as Python, R, or Java.
+Strong experience with SQL and working with large-scale relational databases.
+Solid understanding of statistical concepts, machine learning techniques, and data visualization tools.
+Demonstrated ability to translate business problems into analytical solutions.
+Preferred Qualifications:
+Master’s or Ph.D. in Data Science, Machine Learning, Operations Research, or a related discipline.
+Experience with AWS services such as SageMaker, Redshift, S3, and Lambda.
+Familiarity with big data technologies such as Spark, Hadoop, or EMR.
+Expertise in optimization techniques (e.g., linear programming, constraint programming).
+Excellent communication and presentation skills, with the ability to explain complex technical concepts to non-technical stakeholders.
+Proven ability to lead cross-functional teams and manage multiple projects simultaneously.
+Why You’ll Love This Role:
+Opportunity to work on cutting-edge technologies that power Amazon’s world-class fulfillment and logistics network.
+Work in a fast-paced, collaborative environment with some of the brightest minds in the industry.
+Solve real-world problems that have a direct impact on millions of customers worldwide.
+Access to Amazon’s vast resources and learning opportunities to grow your skills and career.
+Competitive salary, comprehensive benefits, and flexible work arrangements.
+About Amazon:
+Amazon is committed to building a diverse and inclusive workforce and is an equal opportunity employer. We strive to create a workplace where every employee feels empowered to bring their best, authentic selves to work. Join us and help invent the future of logistics and e-commerce.
