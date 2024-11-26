@@ -72,25 +72,51 @@ def extract_skills(text):
 
 
 async def main():
-    st.set_page_config(layout="wide")
-
-    st.title("RealTime Interview Assistant")
+   
+    st.set_page_config(page_title="Interview Assistant", layout="wide")
+    
+    # Add custom CSS to style the file uploader widget
+    st.markdown(
+        """
+        <style>
+            .file-upload-container {
+                max-width: 150px; /* Set the desired width */
+                margin: 0 auto; /* Center align if needed */
+                font-size: 12px; /* Reduce font size */
+            }
+            .file-upload-container .uploadedFileName {
+                font-size: 10px; /* Adjust the size of uploaded filename text */
+            }
+            .file-upload-container button {
+                padding: 2px 8px; /* Adjust padding of the upload button */
+            }
+            </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    # App Header
+    st.markdown("# 🎤 RealTime Interview Assistant")
+    st.markdown(
+        "Prepare for interviews with AI-powered insights. Upload your resume and job description, record your question, and get expert-level responses in real-time."
+    )
     
     # Sidebar settings
-    st.sidebar.title("Settings")
+    st.sidebar.title("⚙️ Settings")
     st.sidebar.info("Adjust the following:")
     response_length = st.sidebar.slider("Response Length (words)", 50, 500, 150)
     model_choice = st.sidebar.selectbox(
         "Choose Model",
         ["llama-3.2-3b-preview", "llama-3.1-70b-versatile", "mixtral-8x7b-32768", "llama-2-13b", "gemma2-9b-it", "gpt-3.5-turbo"],
     )
+    st.sidebar.info("🎯 Adjust the settings to customize your experience.")
     
     # Columns layout
     left_col, middle_col, right_col = st.columns([1, 1, 2])
 
     with left_col:
-        st.subheader("Uploads")
-        uploaded_resume = st.file_uploader("Resume", type=["txt", "docx"])
+        st.subheader("📄 Upload Files")
+        
+        uploaded_resume = st.file_uploader("Resume", type=["txt", "docx"], key="resume_uploader")
         text = ""
         if uploaded_resume:
             if uploaded_resume.type == "text/plain":
@@ -98,7 +124,7 @@ async def main():
             elif uploaded_resume.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
                 text = read_word_document(BytesIO(uploaded_resume.read()))
 
-        uploaded_job_desc = st.file_uploader("Job Description", type=["txt", "docx"])
+        uploaded_job_desc = st.file_uploader("Job Description", type=["txt", "docx"], key="job_desc_uploader")
         jobd = ""
         if uploaded_job_desc:
             if uploaded_job_desc.type == "text/plain":
@@ -108,8 +134,8 @@ async def main():
 
         if jobd:
             skills = extract_skills(jobd)
-            st.markdown("### Key Skills from Job Description")
-            st.write(", ".join(skills))
+            with st.expander("🔑 Extracted Skills from Job Description"):
+                st.write(", ".join(skills))
 
     with middle_col:
         st.subheader("Record & Process")
@@ -146,7 +172,7 @@ async def main():
         )
         #add timer to return time taken to get response
         start_time = time.time()  
-        context = text[:2500] + jobd[:1000]
+        # context = text[:2500] + jobd[:1000]
         # Capture the custom event and display the recognized text
         result = streamlit_bokeh_events(
             st.session_state.stt_button,
@@ -162,7 +188,7 @@ async def main():
 
             primer = f"""
                     You are a professional interviewee, skilled at answering questions with clarity, confidence, and relevance.
-                    - Your role is to provide thoughtful, well-structured, and natural answers to interview questions based on the job description and resume provided here ({context}).
+                    - Your role is to provide thoughtful, well-structured, and natural answers to interview questions based on the job description ({jobd[:1000]}) and resume provided here ({text[:2500]}).
                     - Craft your responses to be professional yet conversational, showcasing experience, skills, and enthusiasm for the role.
                     - Tailor your answers to align with the job requirements, using specific examples from my experience in the provided text.
                     - Keep your answers concise and engaging, within the specified word limit: {response_length}.
@@ -180,18 +206,25 @@ async def main():
         st.write(f"{elapsed_time:.2f} seconds")
 
     with right_col:
-        st.subheader("Question & Response")
+        st.subheader("📜 Q&A")
         st.markdown("### Question:")
         st.write(st.session_state.get("question", "Your question will appear here after recording."))
 
         st.markdown("### Response:")
         st.write(st.session_state.get("response", "The response will appear here after processing."))
 
-    st.markdown("### Was this response helpful?")
-    if st.button("👍 Yes"):
-        st.success("Thank you for your feedback!")
-    if st.button("👎 No"):
-        st.warning("We'll work to improve!")
+    # Feedback Section
+    st.markdown("### 🙋 Was this response helpful?")
+    feedback_col1, feedback_col2, feedback_col3 = st.columns(3)
+
+    with feedback_col1:
+        if st.button("👍 Yes"):
+            st.success("Thanks for your feedback!")
+    with feedback_col2:
+        if st.button("👎 No"):
+            st.warning("We'll strive to improve.")
+    with feedback_col3:
+        st.button("🤔 Neutral")
 
 
 if __name__ == "__main__":
