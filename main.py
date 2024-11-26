@@ -188,7 +188,7 @@ async def main():
 
             primer = f"""
                     You are a professional interviewee, skilled at answering questions with clarity, confidence, and relevance.
-                    - Your role is to provide thoughtful, well-structured, and natural answers to interview questions based on the job description ({jobd[:1000]}) and resume provided here ({text[:2500]}).
+                    - Your role is to provide thoughtful, well-structured, and natural answers to interview questions based on the resume provided here ({text[:2500]}) for this job description ({jobd[:1000]}).
                     - Craft your responses to be professional yet conversational, showcasing experience, skills, and enthusiasm for the role.
                     - Tailor your answers to align with the job requirements, using specific examples from my experience in the provided text.
                     - Keep your answers concise and engaging, within the specified word limit: {response_length}.
