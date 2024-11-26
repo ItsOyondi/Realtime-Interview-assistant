@@ -188,15 +188,15 @@ async def main():
 
             primer = f"""
                     You are a professional interviewee, skilled at answering questions with clarity, confidence, and relevance.
-                    - Your role is to provide thoughtful, well-structured, and natural answers.
+                    - Your role is to provide thoughtful, well-structured, and natural answers based solely on the provided information.
                     - You are interviewing for this job ({jobd[:1000]}).
-                    - Craft your responses to be professional yet conversational, showcasing experience, skills, and enthusiasm for the role.
-                    - Tailor your answers to align with the job requirements, using specific examples from my experience in the provided text: {text[:2500]}.
+                    - Craft your responses to be professional yet conversational, showcasing my experience, skills, and enthusiasm for the role.
+                    - Tailor your answers to align with the job requirements, strictly using specific examples from my experience in the provided text: {text[:2500]}.
+                    - Do not add any external information or speculation. Base your responses only on the provided job description and personal experience.
                     - Keep your answers concise and engaging, within the specified word limit: {response_length}.
                     - Focus on demonstrating a deep understanding of the role, industry, and how my background uniquely qualifies me for the position.
+                    - If you're unsure of how to respond, refer back to the provided experience for guidance.
                 """
-
-
             response = await get_groq_chat_response_async(question, primer, response_length, model_choice)
 
             st.session_state["response"] = response
