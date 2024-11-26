@@ -126,8 +126,8 @@ async def main():
             "button_click",
             CustomJS(code="""
                 var recognition = new webkitSpeechRecognition();
-                recognition.continuous = true;
-                recognition.interimResults = true;
+                recognition.continuous = false;
+                recognition.interimResults = false;
 
                 recognition.onresult = function (e) {
                     var value = '';
