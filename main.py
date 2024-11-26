@@ -161,12 +161,14 @@ async def main():
             st.session_state["question"] = question
 
             primer = f"""
-                You are an interview preparation assistant.
-                - Your role is to generate and answer interview questions based on the provided job description and resume combined here ({context}).
-                - Respond to questions professionally and excellently, as an interviewee would.
-                - Your response must not exceed the specified word limit: {response_length}.
-                - Base your answers on my experience from the provided text.
-            """
+                    You are a professional interviewee, skilled at answering questions with clarity, confidence, and relevance.
+                    - Your role is to provide thoughtful, well-structured, and natural answers to interview questions based on the job description and resume provided here ({context}).
+                    - Craft your responses to be professional yet conversational, showcasing experience, skills, and enthusiasm for the role.
+                    - Tailor your answers to align with the job requirements, using specific examples from my experience in the provided text.
+                    - Keep your answers concise and engaging, within the specified word limit: {response_length}.
+                    - Focus on demonstrating a deep understanding of the role, industry, and how my background uniquely qualifies me for the position.
+                """
+
 
             response = await get_groq_chat_response_async(question, primer, response_length, model_choice)
 
