@@ -141,16 +141,16 @@ async def main():
         st.subheader("Record & Process")
         st.info("Click the button below to record your question.")
 
-        # if "stt_button" not in st.session_state:
-        #     # Create a Speak button and store it in session state
-        #     st.session_state.stt_button = Button(label="Ask Question", width=100)
+        if "stt_button" not in st.session_state:
+            # Create a Speak button and store it in session state
+            st.session_state.stt_button = Button(label="Ask Question", width=100)
 
         st.bokeh_chart(st.session_state.stt_button)
 
         # JavaScript to start speech recognition
         st.session_state.stt_button.js_on_event(
             "button_click",
-            CustomJS(code="""
+            CustomJS(code=""" 
                 var recognition = new webkitSpeechRecognition();
                 recognition.continuous = false;
                 recognition.interimResults = true;
