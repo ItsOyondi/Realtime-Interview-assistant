@@ -146,7 +146,8 @@ async def main():
         )
         #add timer to return time taken to get response
         start_time = time.time()  
-
+        context = text[:2500] + jobd[:1000]
+        # Capture the custom event and display the recognized text
         result = streamlit_bokeh_events(
             st.session_state.stt_button,
             events="GET_TEXT",
@@ -161,7 +162,7 @@ async def main():
 
             primer = f"""
                 You are an interview preparation assistant.
-                - Your role is to generate and answer interview questions based on the provided job description ({jobd}) and resume ({text}).
+                - Your role is to generate and answer interview questions based on the provided job description and resume combined here ({context}).
                 - Respond to questions professionally and excellently, as an interviewee would.
                 - Your response must not exceed the specified word limit: {response_length}.
                 - Base your answers on my experience from the provided text.
