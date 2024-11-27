@@ -28,7 +28,7 @@ except OSError:
     st.error("The spaCy model 'en_core_web_sm' is not installed. Install it with: `python -m spacy download en_core_web_sm`")
 
 
-async def get_groq_chat_response_async(question, primer, max_words, model="llama-3.2-3b-preview"):
+async def get_groq_chat_response_async(question, primer, model="gemma2-9b-it"):
     #Asynchronous API call for faster response.
     try:
         messages = [
@@ -73,6 +73,7 @@ def extract_skills(text):
 
 async def main():
    
+    # Set page configuration
     st.set_page_config(page_title="Interview Assistant", layout="wide")
     
     # Add custom CSS to style the file uploader widget
@@ -90,60 +91,57 @@ async def main():
             .file-upload-container button {
                 padding: 2px 8px; /* Adjust padding of the upload button */
             }
-            </style>
+        </style>
         """,
         unsafe_allow_html=True,
     )
-    # App Header
-    st.markdown("# 🎤 RealTime Interview Assistant")
-    st.markdown(
-        "Prepare for interviews with AI-powered insights. Upload your resume and job description, record your question, and get expert-level responses in real-time."
-    )
     
     # Sidebar settings
-    st.sidebar.title("⚙️ Settings")
-    st.sidebar.info("Adjust the following:")
-    response_length = st.sidebar.slider("Response Length (words)", 50, 500, 150)
+    st.sidebar.subheader("⚙️ Settings")
+    # st.sidebar.info("Adjust the following:")
+    response_length = st.sidebar.slider("Response Length (words)", 50, 500, 100)
     model_choice = st.sidebar.selectbox(
         "Choose Model",
         ["llama-3.2-3b-preview", "llama-3.1-70b-versatile", "mixtral-8x7b-32768", "llama-2-13b", "gemma2-9b-it", "gpt-3.5-turbo"],
     )
-    st.sidebar.info("🎯 Adjust the settings to customize your experience.")
+
+    # st.sidebar.info("🎯 Customize your experience using these settings.")
+
+    st.sidebar.subheader("📄 Upload Files")
+
+    # Resume upload
+    uploaded_resume = st.sidebar.file_uploader("Upload Resume", type=["txt", "docx"], key="resume_uploader")
+    text = ""
+    if uploaded_resume:
+        if uploaded_resume.type == "text/plain":
+            text = read_file(uploaded_resume)
+        elif uploaded_resume.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            text = read_word_document(BytesIO(uploaded_resume.read()))
+
+    # Job description upload
+    uploaded_job_desc = st.sidebar.file_uploader("Upload Job Description", type=["txt", "docx"], key="job_desc_uploader")
+    jobd = ""
+    if uploaded_job_desc:
+        if uploaded_job_desc.type == "text/plain":
+            jobd = read_file(uploaded_job_desc)
+        elif uploaded_job_desc.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            jobd = read_word_document(BytesIO(uploaded_job_desc.read()))
     
+    
+    
+
     # Columns layout
-    left_col, middle_col, right_col = st.columns([1, 1, 2])
+    left_col, right_col = st.columns([3, 1])
 
     with left_col:
-        st.subheader("📄 Upload Files")
-        
-        uploaded_resume = st.file_uploader("Resume", type=["txt", "docx"], key="resume_uploader")
-        text = ""
-        if uploaded_resume:
-            if uploaded_resume.type == "text/plain":
-                text = read_file(uploaded_resume)
-            elif uploaded_resume.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                text = read_word_document(BytesIO(uploaded_resume.read()))
-
-        uploaded_job_desc = st.file_uploader("Job Description", type=["txt", "docx"], key="job_desc_uploader")
-        jobd = ""
-        if uploaded_job_desc:
-            if uploaded_job_desc.type == "text/plain":
-                jobd = read_file(uploaded_job_desc)
-            elif uploaded_job_desc.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                jobd = read_word_document(BytesIO(uploaded_job_desc.read()))
-
-        if jobd:
-            skills = extract_skills(jobd)
-            with st.expander("🔑 Extracted Skills from Job Description"):
-                st.write(", ".join(skills))
-
-    with middle_col:
-        st.subheader("Record & Process")
-        st.info("Click the button below to record your question.")
-
+        st.title("🎤 RealTime Interview Assistant")
+        st.markdown(
+            "###### Prepare for interviews with AI-powered insights. Upload your resume and job description, record your question, and get expert-level responses in real-time."
+        )
+        # st.info("Click the button below to record your question.")
         if "stt_button" not in st.session_state:
             # Create a Speak button and store it in session state
-            st.session_state.stt_button = Button(label="Ask Question", width=100)
+            st.session_state.stt_button = Button(label="Ask Question", width=70)
 
         # JavaScript to start speech recognition
         st.session_state.stt_button.js_on_event(
@@ -168,19 +166,23 @@ async def main():
                 recognition.start();
             """),
         )
-        #add timer to return time taken to get response
-        start_time = time.time()  
-        # context = text[:2500] + jobd[:1000]
-        # Capture the custom event and display the recognized text
         result = streamlit_bokeh_events(
             st.session_state.stt_button,
             events="GET_TEXT",
             key="speech",
             refresh_on_update=True,
-            override_height=75,
+            override_height=50,
             debounce_time=0,
         )
+
+        # Capture the custom event and display the recognized text
+        # st.subheader("📜 Q&A")
+        st.markdown("#### Response:")
+        st.write(st.session_state.get("response", "The response will appear here after processing."))
         
+        #add timer to return time taken to get response
+        start_time = time.time()  
+        # context = text[:2500] + jobd[:1000]
         if result and "GET_TEXT" in result:
             question = result.get("GET_TEXT")
             st.session_state["question"] = question
@@ -196,9 +198,10 @@ async def main():
                     - Focus on demonstrating a deep understanding of the role, industry, and how my background uniquely qualifies me for the position.
                     - If you're unsure of how to respond, refer back to the provided experience for guidance.
                 """
-            response = await get_groq_chat_response_async(question, primer, response_length, model_choice)
+            response = await get_groq_chat_response_async(question, primer, model_choice)
 
             st.session_state["response"] = response
+            
         end_time = time.time()  
         elapsed_time = end_time - start_time  
         #display elapsed time
@@ -206,12 +209,14 @@ async def main():
         st.write(f"{elapsed_time:.2f} seconds")
 
     with right_col:
-        st.subheader("📜 Q&A")
-        st.markdown("### Question:")
-        st.write(st.session_state.get("question", "Your question will appear here after recording."))
-
-        st.markdown("### Response:")
-        st.write(st.session_state.get("response", "The response will appear here after processing."))
+        #show question here
+        st.markdown("#### Question:")
+        st.info(st.session_state.get("question", "Your question will appear here after recording."))
+        st.subheader("🔑 Skills from job description")
+        if jobd:
+            skills = extract_skills(jobd)
+            with st.expander("Extracted Skills"):
+                st.write(", ".join(skills))
 
     # Feedback Section
     st.markdown("### 🙋 Was this response helpful?")
