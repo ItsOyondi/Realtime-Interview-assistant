@@ -180,6 +180,7 @@ async def main():
             override_height=75,
             debounce_time=0,
         )
+        
         if result and "GET_TEXT" in result:
             question = result.get("GET_TEXT")
             st.session_state["question"] = question
