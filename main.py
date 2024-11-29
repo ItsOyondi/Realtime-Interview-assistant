@@ -82,8 +82,8 @@ async def main():
         st.session_state.transcriptions = []
 
     model_name = st.sidebar.selectbox("Whisper Model", ["base", "small", "medium", "large"], index=0)
-    start_button = st.sidebar.button("Start Transcription")
-    stop_button = st.sidebar.button("Stop Transcription")
+    start_button = st.sidebar.button("Start Interview")
+    stop_button = st.sidebar.button("End Interview")
 
     left_col, right_col = st.columns([3, 1])
 
