@@ -8,7 +8,7 @@ from speech_recognition import Microphone, Recognizer
 import threading
 import queue
 import time
-from audio_recorder_streamlit import audio_recorder
+# from audio_recorder_streamlit import audio_recorder
 import os
 
 # Global variables
