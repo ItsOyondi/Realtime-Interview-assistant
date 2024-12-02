@@ -34,4 +34,5 @@ torch
 torchvision 
 torchaudio
 SpeechRecognition
+streamlit_audiorec
 websockets
