@@ -34,4 +34,7 @@ torch
 torchvision 
 torchaudio
 SpeechRecognition
-
+av
+streamlit_audiorec
+pydup
+websockets

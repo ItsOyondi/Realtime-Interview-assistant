@@ -8,6 +8,8 @@ from speech_recognition import Microphone, Recognizer
 import threading
 import queue
 import time
+from audio_recorder_streamlit import audio_recorder
+import os
 
 # Global variables
 audio_queue = queue.Queue()
@@ -38,8 +40,13 @@ def capture_audio(sr=16000, duration=5):
             stop_signal.set()
 
 # Audio processing and transcription function
-def process_audio(sr=16000, thresh=15, k=2, model_name="base"):
+def process_audio(sr=16000, thresh=15, k=3, model_name="base"):
     model = load_model(model_name)
+
+    # Buffer to hold audio for the current speaker
+    speaker_audio_buffer = []
+    current_speaker = None
+    silence_threshold = 0.5  # Minimum duration of silence to consider speaker finished
 
     while not stop_signal.is_set():
         try:
@@ -66,6 +73,14 @@ def process_audio(sr=16000, thresh=15, k=2, model_name="base"):
 
             voiced_audio = audio_chunk[vad_audio > 0]
             if len(voiced_audio) == 0:
+                # If there's no voiced audio, check if the speaker has stopped
+                if current_speaker is not None and len(speaker_audio_buffer) > 0:
+                    accumulated_audio = np.concatenate(speaker_audio_buffer)
+                    result = model.transcribe(accumulated_audio)
+                    transcript = result["text"]
+                    transcription_results.append(f"{current_speaker}: {transcript}")
+                    speaker_audio_buffer.clear()
+                    current_speaker = None
                 continue
 
             # MFCC feature extraction
@@ -77,27 +92,35 @@ def process_audio(sr=16000, thresh=15, k=2, model_name="base"):
             kmeans = KMeans(n_clusters=k, random_state=42)
             speaker_labels = kmeans.fit_predict(mfccs_scaled)
 
-            # Transcription with Whisper
-            result = model.transcribe(voiced_audio)
-            transcript = result["text"]
+            # Determine the current speaker
+            predominant_speaker = np.argmax(np.bincount(speaker_labels)) if len(speaker_labels) > 0 else -1
+            speaker_label = "others"
+            if predominant_speaker == 1:
+                speaker_label = "interviewee"
+            elif predominant_speaker == 2:
+                speaker_label = "interviewer"
 
-            # Map transcript to speakers
-            segments = result.get("segments", [])
-            for segment in segments:
-                start, end = segment["start"], segment["end"]
-                text = segment["text"]
-                start_frame = int(start * sr / len(audio_chunk) * len(speaker_labels))
-                end_frame = int(end * sr / len(audio_chunk) * len(speaker_labels))
-                speaker_frames = speaker_labels[start_frame:end_frame]
-                speaker = np.argmax(np.bincount(speaker_frames)) if len(speaker_frames) > 0 else -1
+            # Accumulate audio for the current speaker
+            if current_speaker == speaker_label:
+                speaker_audio_buffer.append(voiced_audio)
+            else:
+                # Process the previous speaker's audio before switching
+                if current_speaker is not None and len(speaker_audio_buffer) > 0:
+                    accumulated_audio = np.concatenate(speaker_audio_buffer)
+                    result = model.transcribe(accumulated_audio)
+                    transcript = result["text"]
+                    transcription_results.append(f"{current_speaker}: {transcript}")
+                    speaker_audio_buffer.clear()
 
-                speaker_label = "interviewee" if speaker == 1 else "interviewer"
-                transcription_results.append(f"{speaker_label}: {text}")
+                # Switch to the new speaker
+                current_speaker = speaker_label
+                speaker_audio_buffer.append(voiced_audio)
 
         except Exception as e:
             transcription_results.append(f"Error: {e}")
             stop_signal.set()
             break
+
 
 # Streamlit App
 def main():

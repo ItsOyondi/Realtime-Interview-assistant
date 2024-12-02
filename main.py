@@ -5,7 +5,9 @@ from io import BytesIO
 from docx import Document
 import spacy
 import asyncio
+import time
 from mods import kmns
+from mods import km
 
 # Initialize OpenAI client with Groq's API
 GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", os.getenv("GROQ_API_KEY"))
@@ -24,7 +26,7 @@ except OSError:
     st.error("The spaCy model 'en_core_web_sm' is not installed. Install it with: `python -m spacy download en_core_web_sm`")
 
 # Asynchronous function for Groq API
-async def get_groq_chat_response_async(question, primer, model="gemma2-9b-it"):
+async def get_groq_chat_response_async(question, primer, model="mixtral-8x7b-32768"):
     try:
         messages = [
             {"role": "system", "content": primer},
@@ -69,7 +71,7 @@ async def main():
     response_length = st.sidebar.slider("Response Length (words)", 50, 500, 100)
     model_choice = st.sidebar.selectbox(
         "Choose Model",
-        ["llama-3.2-3b-preview", "llama-3.1-70b-versatile", "mixtral-8x7b-32768", "llama-2-13b", "gemma2-9b-it", "gpt-3.5-turbo"],
+        ["llama-3.2-3b-preview", "llama-3.1-70b-versatile", "mixtral-8x7b-32768", "llama-2-13b", "gemma2-9b-it"],
     )
 
     uploaded_resume = st.sidebar.file_uploader("Upload Resume", type=["txt", "docx"], key="resume_uploader")
@@ -108,10 +110,13 @@ async def main():
         ########## End of system prompt
 
         if start_button:
-            kmns.stop_signal.clear()
             st.session_state.transcriptions.clear()
-            kmns.threading.Thread(target=kmns.capture_audio, args=(16000, 5), daemon=True).start()
-            kmns.threading.Thread(target=kmns.process_audio, args=(16000, 15, 2, model_name), daemon=True).start()
+            km.stop_signal.clear()
+            km.start_audio_server()
+            time.sleep(1)
+            km.inject_audio_capture_js()
+            km.threading.Thread(target=km.capture_audio, daemon=True).start()
+            km.threading.Thread(target=km.process_audio, daemon=True).start()
 
         if stop_button:
             kmns.stop_signal.set()
@@ -124,23 +129,26 @@ async def main():
             while not kmns.stop_signal.is_set():
                 if kmns.transcription_results:
                     interviewer_questions = [
-                        result.split("interviewer: ", 1)[1]
+                        result.split(": ", 1)[1]
                         for result in kmns.transcription_results
-                        if result.startswith("interviewer:")
+                        if (result.startswith("interviewer:") or result.startswith("others:")) and ": " in result
                     ]
                     kmns.transcription_results.clear()
 
                     #Extract interviewee answers
-                    interviewee_answers = [
-                        result.split("interviewee: ", 1)[1]
-                        for result in kmns.transcription_results
-                        if result.startswith("interviewee:")
-                    ]
+                    # interviewee_answers = [
+                    #     result.split("interviewee: ", 1)[1]
+                    #     for result in kmns.transcription_results
+                    #     if result.startswith("interviewee:")
+                    # ]
 
                     for question in interviewer_questions:
-                        response = await get_groq_chat_response_async(question, primer, model_choice)
-                        formatted_output = f"**Question:** {question} \n\n**Response:** {response}\n"
-                        st.session_state.transcriptions.append(formatted_output)
+                        if question == "1.5%":
+                            continue
+                        else:
+                            response = await get_groq_chat_response_async(question, primer, model_choice)
+                            formatted_output = f"**Question:** {question} \n\n**Response:** {response}\n"
+                            st.session_state.transcriptions.append(formatted_output)
 
                     transcription_area.markdown("\n".join(st.session_state.transcriptions))
 
@@ -151,11 +159,16 @@ async def main():
             await update_transcriptions()
 
     with right_col:
-        st.subheader("🔑 Skills from job description")
+        # st.subheader("🔑 Skills from job description")
+        st.markdown("### Skills Needed:")
         if jobd:
             skills = extract_skills(jobd)
-            with st.expander("Extracted Skills"):
-                st.write(", ".join(skills))
+            if skills:
+                
+                st.markdown("\n".join([f"- {skill}" for skill in skills]))
+            else:
+                st.write("No skills found.")
+            
 
     st.markdown("### 🙋 Was this response helpful?")
     feedback_col1, feedback_col2, feedback_col3 = st.columns(3)
